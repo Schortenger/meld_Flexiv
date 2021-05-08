@@ -9,7 +9,7 @@ import gin
 
 SCRIPT_DIR = os.path.dirname(__file__)
 
-# env='FlexivPegMT4box-v0'
+Flexiv_flag = True
 
 class SawyerReachingEnv(mujoco_env.MujocoEnv):
 
@@ -81,6 +81,7 @@ class SawyerReachingEnv(mujoco_env.MujocoEnv):
         self.site_id_ee = self.model.site_name2id('ee_site')
         self.site_id_goal = self.model.site_name2id(goal_site_name)
 
+
     def override_action_mode(self, action_mode):
         self.action_mode = action_mode
 
@@ -93,8 +94,11 @@ class SawyerReachingEnv(mujoco_env.MujocoEnv):
         angles = self._get_joint_angles()
         velocities = self._get_joint_velocities()
         ee_pose = self._get_ee_pose()
-
-        return np.concatenate([angles, velocities, ee_pose])
+        FT = self._get_FT()
+        if Flexiv_flag: #Flexiv Peg-in-hole task: add F/T sensor
+            return np.concatenate([angles, velocities, ee_pose, FT])
+        else: #Sawyer tasks
+            return np.concatenate([angles, velocities, ee_pose])
 
     def _get_joint_angles(self):
         return self.data.qpos.copy()
@@ -105,6 +109,13 @@ class SawyerReachingEnv(mujoco_env.MujocoEnv):
     def _get_ee_pose(self):
         ''' ee pose is xyz position + orientation quaternion '''
         return self.data.site_xpos[self.site_id_ee].copy()
+
+    def _get_FT(self):
+        """
+            self.sim.data.sensordata[0:21]:[Tx,Ty,Tz] for joint 1~7;
+            self.sim.data.sensordata[21:24]:[Fx,Fy,Fz] for joint 7;
+        """
+        return self.data.sensordata.copy()
 
     def reset_model(self):
         angles_idx = np.random.randint(len(self.start_positions))

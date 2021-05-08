@@ -28,6 +28,7 @@ class RenderGymWrapper(wrappers.PyEnvironmentBaseWrapper):
 
     self.goal_visibile_only_in_videos = goal_visibile_only_in_videos
 
+
   @property
   def sim(self):
     return self._env.sim
