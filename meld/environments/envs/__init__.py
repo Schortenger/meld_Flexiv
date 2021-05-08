@@ -50,6 +50,13 @@ def register_all_gym_envs(MAX_STEPS_DICT):
     ###################################
 
     register(
+        id='FlexivPegMT4box-v0',
+        entry_point='meld.environments.envs.flexiv_peg.flexiv_peg:FlexivPegInsertionEnv4Box',
+        max_episode_steps=MAX_STEPS_DICT["FlexivPegMT4box-v0"],
+    )
+    ###################################
+
+    register(
         id='SawyerButtons-v0',
         entry_point='meld.environments.envs.button.sawyer_button:SawyerButtonsEnv',
         max_episode_steps=MAX_STEPS_DICT["SawyerButtons-v0"],

@@ -9,6 +9,8 @@ import gin
 
 SCRIPT_DIR = os.path.dirname(__file__)
 
+# env='FlexivPegMT4box-v0'
+
 class SawyerReachingEnv(mujoco_env.MujocoEnv):
 
     '''
@@ -19,6 +21,10 @@ class SawyerReachingEnv(mujoco_env.MujocoEnv):
 
         # starting positions
         self.start_positions = []
+        # if env =='FlexivPegMT4box-v0':
+        #     self.start_positions.append(
+        #         np.array([-1.44397e-06, -0.832489, 0.0299997, 1.68, 0.0580013, -0.232, -2.16526e-07]))
+        # else:
         self.start_positions.append(np.array([-1.44397e-06, -0.832489, 0.0299997, 1.68, 0.0580013, -0.232, -2.16526e-07]))
 
         # vars
@@ -83,9 +89,11 @@ class SawyerReachingEnv(mujoco_env.MujocoEnv):
 
     def get_obs(self):
         ''' state observation is joint angles + joint velocities + ee pose '''
+
         angles = self._get_joint_angles()
         velocities = self._get_joint_velocities()
         ee_pose = self._get_ee_pose()
+
         return np.concatenate([angles, velocities, ee_pose])
 
     def _get_joint_angles(self):

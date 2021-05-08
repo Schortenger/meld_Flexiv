@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import pdb
+
 import gin.tf
 from absl import app
 from absl import flags
@@ -20,7 +22,7 @@ from tf_agents.metrics import tf_py_metric
 from tf_agents.specs import tensor_spec
 from tf_agents.utils import common
 
-
+import skvideo.io
 # our custom "trial" driver 
 # Note: a trial is multiple episodes of preserving the latent
 # (instead of tf_agents.drivers.dynamic_episode_driver)
@@ -57,6 +59,7 @@ flags.DEFINE_multi_string('gin_param', None, 'Gin binding to pass through.')
 FLAGS = flags.FLAGS
 
 PRINT_TIMING = False
+RECORD_VIDEO = True
 
 
 @gin.configurable
@@ -150,7 +153,7 @@ def train_eval(
     stop_model_training=1E10,
 
     eval_only=False, # evaluate checkpoints ONLY
-    log_image_observations=False,
+    log_image_observations=True, #False
 
     load_offline_data=False,  # whether to use offline data
     offline_data_dir=None,  # replay buffer's dir
@@ -163,7 +166,7 @@ def train_eval(
 
   # register all gym envs
   max_steps_dict = {"HalfCheetahVel-v0": 50, "SawyerReach-v0": 40, "SawyerReachMT-v0": 40,
-                    "SawyerPeg-v0": 40, "SawyerPegMT-v0": 40, "SawyerPegMT4box-v0": 40,
+                    "SawyerPeg-v0": 40, "SawyerPegMT-v0": 40, "SawyerPegMT4box-v0": 40, "FlexivPegMT4box-v0": 40,
                     "SawyerShelfMT-v0": 40, "SawyerKitchenMT-v0": 40, "SawyerShelfMT-v2": 40,
                     "SawyerButtons-v0": 40,
                     }
@@ -259,6 +262,7 @@ def train_eval(
   print(MELD_summary_string)
   time.sleep(1)
 
+  render_images = []
   ######################################################
   # Seed + name + GPU configs + directories for saving
   ######################################################
@@ -537,6 +541,9 @@ def train_eval(
     ################################################################################
 
     #init collection (with random policy)
+
+
+
     init_collect_ops = []
     for task_idx in range(num_train_tasks):
       # put init data into the rb + track with the train metric
@@ -552,6 +559,14 @@ def train_eval(
         max_episode_len=max_episode_len,
       ).run() # collect one trial
       init_collect_ops.append(init_collect_op)
+
+    #   if RECORD_VIDEO:
+    #     render_images.append(list(eval_py_env.frames))
+    #     eval_py_env.frames[:] = []
+    #
+    # if render_images:
+    #   render_images = np.array(render_images)
+    #   skvideo.io.vwrite("video.mp4", render_images)
 
     # data collection for training (with collect policy)
     collect_ops = []

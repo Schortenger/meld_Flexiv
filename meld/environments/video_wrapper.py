@@ -16,7 +16,7 @@ class VideoWrapper(wrappers.PyEnvironmentBaseWrapper):
     """
     super(VideoWrapper, self).__init__(env)
     self._frames = []
-    self._rendering = False
+    self._rendering = True
 
   def _reset(self):
     time_step = self._env.reset()

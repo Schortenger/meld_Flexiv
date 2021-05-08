@@ -38,6 +38,7 @@
 
     <!-- define a good reset position in joint angles -->
     <keyframe>
+
         <key qpos='-0.305 -0.83 0.06086 1.70464 -0.02976 0.62496 -0.04712'/>
     </keyframe>
 
