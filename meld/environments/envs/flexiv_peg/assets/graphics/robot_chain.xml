@@ -1,0 +1,101 @@
+<mujoco model="flexivArm">
+    <compiler angle="radian" meshdir="/home/flexiv/meld/meld/environments/envs/flexiv_peg/assets/graphics"/>
+    <size njmax="500" nconmax="100" />
+    <visual>
+        <scale framelength="0.5" framewidth="0.01"/>
+    </visual>
+    <asset>
+        <mesh name="link0_body" file="link0_body.stl" />
+        <mesh name="link1_assemble" file="link1_assemble.stl" />
+        <mesh name="link2_assemble" file="link2_assemble.stl" />
+        <mesh name="link3_assemble" file="link3_assemble.stl" />
+        <mesh name="link4_assemble" file="link4_assemble.stl" />
+        <mesh name="link5_assemble" file="link5_assemble.stl" />
+        <mesh name="link6_assemble" file="link6_assemble.stl" />
+        <mesh name="link7_assemble" file="link7_assemble.stl" />
+    </asset>
+    <worldbody>
+        <!-- light -->    
+        <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" />
+        <!-- add plane-->
+        <geom name="floor" pos="0 0 0" size="1 1 1" type="plane" rgba="1 0.83 0.61 0.5"/>
+
+        <geom quat="-2.32051e-08 0 0 -1" type="mesh" mesh="link0_body" />
+        <body name="link1" pos="0 0 0.135" quat="-2.32051e-08 0 0 -1">
+            <inertial pos="0.000141 0.006523 0.143853" quat="0.997785 0.0479804 0.00157356 -0.0460579" mass="3.62605" diaginertia="0.0272996 0.0269979 0.00715751" />
+            <joint name="joint1" pos="0 0 0" axis="0 0 1" limited="true" range="-2.87979 2.87979" damping="0.1" />
+            <geom type="mesh" mesh="link1_assemble" />
+            <site name="force_joint1" zaxis="0 0 1"/>
+            <body name="link2" pos="0 0.03 0.21">
+                <inertial pos="8.9e-05 0.036431 0.093926" quat="0.705426 -0.00502163 0.00482471 0.70875" mass="2.68624" diaginertia="0.0233579 0.022489 0.00339013" />
+                <joint name="joint2" pos="0 0 0" axis="0 1 0" limited="true" range="-2.16421 2.16421" damping="0.1" />
+                <geom type="mesh" mesh="link2_assemble" />
+		<site name="force_joint2" zaxis="0 0 1"/>
+                <body name="link3" pos="0 0.035 0.205">
+                    <inertial pos="-0.01083 -0.00314 0.129501" quat="0.978495 -0.022986 0.0722478 0.191829" mass="2.26691" diaginertia="0.0136095 0.0129899 0.0032166" />
+                    <joint name="joint3" pos="0 0 0" axis="0 0 1" limited="true" range="-3.05433 3.05433" damping="0.1" />
+                    <geom type="mesh" mesh="link3_assemble" />
+		    <site name="force_joint3" zaxis="0 0 1"/>
+                    <body name="link4" pos="-0.02 -0.03 0.19">
+                        <inertial pos="0.012922 -0.03068 0.100548" quat="0.841987 0.000877246 -0.0591684 0.536242" mass="2.26691" diaginertia="0.0174014 0.0169065 0.00243602" />
+                        <joint name="joint4" pos="0 0 0" axis="0 1 0" limited="true" range="-2.79253 1.95477" damping="0.1" />
+                        <geom type="mesh" mesh="link4_assemble" />
+			<site name="force_joint4" zaxis="0 0 1"/>
+                        <body name="link5" pos="0.02 -0.025 0.195">
+                            <inertial pos="0.000117 0.00488 0.127751" quat="0.998534 0.0470568 -8.04497e-05 -0.0267486" mass="2.16894" diaginertia="0.012882 0.0125713 0.0029197" />
+                            <joint name="joint5" pos="0 0 0" axis="0 0 1" limited="true" range="-3.05433 3.05433" damping="0.1" />
+                            <geom type="mesh" mesh="link5_assemble" />
+			    <site name="force_joint5" zaxis="0 0 1"/>
+                            <body name="link6" pos="0 0.03 0.19">
+                                <inertial pos="-0.008873 0.055861 0.06832" quat="0.507255 0.126385 -0.0891271 0.847806" mass="2.03747" diaginertia="0.00895596 0.00775726 0.00269278" />
+                                <joint name="joint6" pos="0 0 0" axis="0 1 0" limited="true" range="-1.48353 4.62512" damping="0.1" />
+                                <geom type="mesh" mesh="link6_assemble" />
+				<site name="force_joint6" zaxis="0 0 1"/>
+                                <body name="link7" pos="-0.055 0.07 0.11" quat="0.707107 0 -0.707107 0">
+                                    <inertial pos="-0.027589 -0.000557 -1.6e-05" quat="0.362454 0.702242 0.560959 0.246595" mass="0.878548" diaginertia="0.00112093 0.00109405 0.00109102" />
+                                    <joint name="joint7" pos="0 0 0" axis="0 0 1" limited="true" range="-3.05433 3.05433" damping="0.1" />
+                                    <geom type="mesh" mesh="link7_assemble" />
+				                    <site name="force_joint7" zaxis="0 0 1"/>
+                                    <!-- end effector -->
+									<body name="end_effector" pos="0 0 .11" quat="0.707107 0 0 0.707107">
+
+										<inertial pos="1e-08 1e-08 1e-08" quat="0.820473 0.339851 -0.17592 0.424708" mass="1e-08" diaginertia="1e-08 1e-08 1e-08" />
+
+										<!-- peg end-effector -->
+										<geom size="0.015 0.015 0.03" pos="0 0 0.0" type="box" rgba="0 0 0 1"/>
+
+										<!-- site for this end effector -->
+										<site name="ee_site" pos="0 0 .03" size="0.005" rgba='1 1 1 0' />
+
+
+									</body> <!-- end end effector -->
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <sensor> 	
+      	<torque name="torque1" site="force_joint1"/>	
+	<torque name="torque2" site="force_joint2"/>
+	<torque name="torque3" site="force_joint3"/>
+	<torque name="torque4" site="force_joint4"/>
+	<torque name="torque5" site="force_joint5"/>
+	<torque name="torque6" site="force_joint6"/>
+	<torque name="torque7" site="force_joint7"/>
+	<force name="force7" site="force_joint7"/>
+    </sensor>
+
+    <actuator>
+	<velocity forcelimited="true" forcerange="0 20" gear="1" joint="joint1" kv="3.0" name="vctrl_joint_1"/>
+	<velocity forcelimited="true" forcerange="0 20" gear="1" joint="joint2" kv="3.0" name="vctrl_joint_2"/>
+	<velocity forcelimited="true" forcerange="0 20" gear="1" joint="joint3" kv="3.0" name="vctrl_joint_3"/>
+	<velocity forcelimited="true" forcerange="0 20" gear="1" joint="joint4" kv="3.0" name="vctrl_joint_4"/>
+	<velocity forcelimited="true" forcerange="0 20" gear="1" joint="joint5" kv="3.0" name="vctrl_joint_5"/>
+	<velocity forcelimited="true" forcerange="0 20" gear="1" joint="joint6" kv="3.0" name="vctrl_joint_6"/>
+	<velocity forcelimited="true" forcerange="0 20" gear="1" joint="joint7" kv="3.0" name="vctrl_joint_7"/>
+    </actuator>
+</mujoco>
