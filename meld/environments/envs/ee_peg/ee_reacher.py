@@ -69,14 +69,24 @@ class EEReachingEnv(mujoco_env.MujocoEnv):
         self.observation_space = Box(low=-np.ones(obs_size) * np.inf, high=np.ones(obs_size) * np.inf)
 
         # vel limits
-        joint_vel_lim = 0.04 # magnitude of movement allowed within a dt [deg/dt]
-        self.limits_lows_joint_vel = -np.array([joint_vel_lim]*self.num_joint_dof)
-        self.limits_highs_joint_vel = np.array([joint_vel_lim]*self.num_joint_dof)
+        # joint_vel_lim = 0.04 # magnitude of movement allowed within a dt [deg/dt]
+        # self.limits_lows_joint_vel = -np.array([joint_vel_lim]*self.num_joint_dof)
+        # self.limits_highs_joint_vel = np.array([joint_vel_lim]*self.num_joint_dof)
+
+        rotz_vel_lim = 0.04
+        slix_vel_lim = 0.01
+        sliy_vel_lim = 0.01
+        F_sliz_vel_lim = 0.1
+
+        self.limits_lows_dof_vel = -np.array([rotz_vel_lim, slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim])
+        self.limits_highs_dof_vel = np.array([rotz_vel_lim, slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim])
+
 
         # ranges
         self.action_range = self.action_highs-self.action_lows
         self.joint_pos_range = (self.limits_highs_joint_pos - self.limits_lows_joint_pos)
-        self.joint_vel_range = (self.limits_highs_joint_vel - self.limits_lows_joint_vel)
+        # self.joint_vel_range = (self.limits_highs_joint_vel - self.limits_lows_joint_vel)
+        self.dof_vel_range = (self.limits_highs_dof_vel-self.limits_lows_dof_vel)
 
         # ids
         self.body_id_ee = self.model.body_names.index('end_effector')
@@ -149,11 +159,13 @@ class EEReachingEnv(mujoco_env.MujocoEnv):
 
             elif self.action_mode=='joint_delta_position':
                 # scale incoming (-1,1) to self.vel_limits
-                desired_delta_position = (((action - self.action_lows) * self.joint_vel_range) / self.action_range) + self.limits_lows_joint_vel
+                desired_delta_position = (((action - self.action_lows) * self.dof_vel_range) / self.action_range) + self.limits_lows_dof_vel
 
                 # add delta
                 feasible_desired_position = curr_position + desired_delta_position
 
+        # make sure position is always in its range
+        feasible_desired_position = feasible_desired_position.clip(self.limits_lows_joint_pos, self.limits_highs_joint_pos)
         self.do_simulation(feasible_desired_position, self.frame_skip)
 
     def step(self, action):

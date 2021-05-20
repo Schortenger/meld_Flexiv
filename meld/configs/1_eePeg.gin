@@ -5,7 +5,7 @@
 
 train_eval.env_name = 'EEPegMT4box-v0'
 train_eval.action_repeat = 1
-train_eval.action_mode = 'joint_position'
+train_eval.action_mode = 'joint_delta_position'
 
 # ==============================================================================
 # Dimensions for networks:
