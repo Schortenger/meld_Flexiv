@@ -170,7 +170,7 @@ def train_eval(
   max_steps_dict = {"HalfCheetahVel-v0": 50, "SawyerReach-v0": 40, "SawyerReachMT-v0": 40,
                     "SawyerPeg-v0": 40, "SawyerPegMT-v0": 40, "SawyerPegMT4box-v0": 40, "FlexivPegMT4box-v0": 40,
                     "SawyerShelfMT-v0": 40, "SawyerKitchenMT-v0": 40, "SawyerShelfMT-v2": 40,
-                    "SawyerButtons-v0": 40,
+                    "SawyerButtons-v0": 40, "EEPegMT4box-v0": 40,
                     }
   if max_episode_len_override:
     max_steps_dict[env_name] = max_episode_len_override

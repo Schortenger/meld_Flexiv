@@ -1,7 +1,7 @@
 import pdb
 
 from mujoco_py import load_model_from_path, MjSim, MjViewer
-
+import os
 import itertools
 
 from absl.testing import absltest
@@ -12,9 +12,11 @@ from dm_control.mujoco.wrapper import mjbindings
 from dm_control.utils import inverse_kinematics as ik
 import numpy as np
 import pdb
+import random
 
 mjlib = mjbindings.mjlib
-FlexivPeg_XML = assets.get_contents('/home/flexiv/meld/meld/environments/envs/flexiv_peg/assets/graphics/robot_chain.xml')
+
+FlexivPeg_XML = assets.get_contents(os.path.abspath(os.path.dirname(os.path.dirname(__file__)))+'/assets/graphics/robot_chain.xml')
 
 _SITE_NAME = 'ee_site'
 _JOINTS = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'joint7']
@@ -73,7 +75,7 @@ class my_env(parameterized.TestCase):
     def __init__(self):
         # super(lab_env, self).__init__(env)
         # 导入xml文档
-        self.model = load_model_from_path("assets/flexiv_peg_insertion_4box.xml")
+        self.model = load_model_from_path("assets/simpleEE_4box.xml")
         # 调用MjSim构建一个basic simulation
         self.sim = MjSim(model=self.model)
         self.sim = MjSim(self.model)
@@ -85,8 +87,12 @@ class my_env(parameterized.TestCase):
         #self.init_qpos = np.array([-0.305, -0.83, 0.06086, 1.70464, -0.02976, 0.62496, -0.04712])
         # Flexiv Peg
         self.init_qpos = np.array([-0.22, -0.43, 0.449, -2, -0.25, 0.799, 0.99])
+
         for i in range(len(self.sim.data.qpos)):
             self.sim.data.qpos[i] = self.init_qpos[i]
+        self.testQposFromSitePose(
+            (np.array([0.57, 0.075, 0.08]), np.array([0.000000e+00, 1.000000e+00, 0.000000e+00, 6.123234e-17])),
+            _INPLACE, True)
 
         print(self.sim.data.ctrl)
         print(self.sim.data.qpos)
@@ -102,9 +108,15 @@ class my_env(parameterized.TestCase):
 
     def step(self):
         # self.testQposFromSitePose((np.array([0.605, 0.075, 0.03]), np.array([0.000000e+00, 1.000000e+00, 0.000000e+00, 6.123234e-17])), _INPLACE)
+        x=random.uniform(0.415, 0.635)
+        y=random.uniform(-0.105, 0.105)
+
         self.testQposFromSitePose(
-            (np.array([0.605, 0.075, 0.03]), np.array([0.000000e+00, 1.000000e+00, 0.000000e+00, 6.123234e-17])),
+            (np.array([x, y, 0.045]), np.array([0.000000e+00, 1.000000e+00, 0.000000e+00, 6.123234e-17])),
             _INPLACE)
+        # self.testQposFromSitePose(
+        #     (None, np.array([0.000000e+00, 1.000000e+00, 0.000000e+00, 6.123234e-17])),
+        #     _INPLACE, True)
         self.sim.step()
         # self.sim.data.ctrl[0] += 0.01
         # print(self.sim.data.ctrl)
@@ -115,7 +127,7 @@ class my_env(parameterized.TestCase):
         self.viewer.render()
         self.timestep += 1
 
-    def create_viewer(self, run_speed=0.5):
+    def create_viewer(self, run_speed=0.0005):
         self.viewer = MjViewer(self.sim)
         self.viewer._run_speed = run_speed
         # self.viewer._hide_overlay = HIDE_OVERLAY
@@ -124,7 +136,7 @@ class my_env(parameterized.TestCase):
         # self.viewer.cam.distance = CAM_DISTANCE
         # self.viewer.cam.elevation = CAM_ELEVATION
 
-    def testQposFromSitePose(self, target, inplace):
+    def testQposFromSitePose(self, target, inplace, qpos_flag=False):
 
         physics = mujoco.Physics.from_xml_string(FlexivPeg_XML)
         target_pos, target_quat = target
@@ -156,7 +168,11 @@ class my_env(parameterized.TestCase):
         self.assertLessEqual(result.err_norm, _TOL)
         # pdb.set_trace()
         physics.data.qpos[:] = result.qpos
-        self.sim.data.ctrl[:] = physics.data.qpos[:]
+        for i in range(len(self.sim.data.qpos)):
+            if qpos_flag:
+                self.sim.data.qpos[i]=physics.data.qpos[i]
+            else:
+                self.sim.data.ctrl[i] = physics.data.qpos[i]
         # print(physics.data.qpos)
         mjlib.mj_fwdPosition(physics.model.ptr, physics.data.ptr)
         if target_pos is not None:

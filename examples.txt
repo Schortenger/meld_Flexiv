@@ -43,6 +43,14 @@ CUDA_VISIBLE_DEVICES=0 python meld/scripts/run_meld.py \
   --gin_file meld/configs/1_flexivPeg.gin \
   --gin_file meld/configs/2_flexivPeg_1episode.gin
 
+### EE Peg
+CUDA_VISIBLE_DEVICES=0 python meld/scripts/run_meld.py \
+  --root_dir save_dir \
+  --experiment_name dense_sawyerButton \
+  --gin_file meld/configs/0_meld_dense.gin \
+  --gin_file meld/configs/1_eePeg.gin \
+  --gin_file meld/configs/2_eePeg_1episode.gin
+
 ### Sawyer Button
 CUDA_VISIBLE_DEVICES=0 python meld/scripts/run_meld.py \
   --root_dir save_dir \
