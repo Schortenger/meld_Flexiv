@@ -163,9 +163,8 @@ class EEReachingEnv(mujoco_env.MujocoEnv):
 
                 # add delta
                 feasible_desired_position = curr_position + desired_delta_position
-
         # make sure position is always in its range
-        feasible_desired_position = feasible_desired_position.clip(self.limits_lows_joint_pos, self.limits_highs_joint_pos)
+        feasible_desired_position = feasible_desired_position.clip(self.model.actuator_ctrlrange.copy()[:, 0], self.model.actuator_ctrlrange.copy()[:, 1])
         self.do_simulation(feasible_desired_position, self.frame_skip)
 
     def step(self, action):
