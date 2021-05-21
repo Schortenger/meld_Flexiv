@@ -75,13 +75,14 @@ class EEReachingEnv(mujoco_env.MujocoEnv):
         # self.limits_lows_joint_vel = -np.array([joint_vel_lim]*self.num_joint_dof)
         # self.limits_highs_joint_vel = np.array([joint_vel_lim]*self.num_joint_dof)
 
-        rotz_vel_lim = 0.04
+
         slix_vel_lim = 0.01
         sliy_vel_lim = 0.01
         F_sliz_vel_lim = 0.1
+        rotz_vel_lim = 0.04
 
-        self.limits_lows_dof_vel = -np.array([rotz_vel_lim, slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim])
-        self.limits_highs_dof_vel = np.array([rotz_vel_lim, slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim])
+        self.limits_lows_dof_vel = -np.array([slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim, rotz_vel_lim])
+        self.limits_highs_dof_vel = np.array([slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim, rotz_vel_lim])
 
 
         # ranges

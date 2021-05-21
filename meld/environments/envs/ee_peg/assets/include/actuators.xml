@@ -1,0 +1,31 @@
+<mujocoinclude>
+
+    <!-- position control -->
+    <actuator>
+        <position name="pctrl_slix" joint="slide_x" forcerange="-10 10"  ctrlrange="0.41 0.63" kp="50"/>
+        <position name="pctrl_sliy" joint="slide_y" forcerange="-10 10" ctrlrange="-0.1 0.1" kp="50"/>
+<!--        <position name="pctrl_sliz" joint="slide_z" forcerange="-10 10" ctrlrange="-0.1 0.1" kp="50"/>-->
+    </actuator>
+
+    <!-- torque control -->
+    <actuator>
+        <motor name="fctrl_sliz" joint="slide_z" ctrlrange="-1.5 0"/>
+    </actuator>
+
+    <!-- position control -->
+    <actuator>
+        <position name="pctrl_rotz" joint="rot_z" forcerange="-10 10"  ctrlrange="-3.14 3.14" kp="50"/>
+    </actuator>
+
+    <!-- velocity control -->
+<!--    <actuator>-->
+<!--        <velocity forcelimited="true" forcerange="-20 20" gear="1" joint="joint1" kv="3.0" name="vctrl_joint_1"/>-->
+<!--        <velocity forcelimited="true" forcerange="-20 20" gear="1" joint="joint2" kv="3.0" name="vctrl_joint_2"/>-->
+<!--        <velocity forcelimited="true" forcerange="-20 20" gear="1" joint="joint3" kv="3.0" name="vctrl_joint_3"/>-->
+<!--        <velocity forcelimited="true" forcerange="-20 20" gear="1" joint="joint4" kv="3.0" name="vctrl_joint_4"/>-->
+<!--        <velocity forcelimited="true" forcerange="-20 20" gear="1" joint="joint5" kv="3.0" name="vctrl_joint_5"/>-->
+<!--        <velocity forcelimited="true" forcerange="-20 20" gear="1" joint="joint6" kv="3.0" name="vctrl_joint_6"/>-->
+<!--        <velocity forcelimited="true" forcerange="-20 20" gear="1" joint="joint7" kv="3.0" name="vctrl_joint_7"/>-->
+<!--    </actuator>-->
+
+</mujocoinclude>
