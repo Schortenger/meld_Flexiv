@@ -11,8 +11,8 @@ ModelDistributionNetwork.base_depth=64
 # ==============================================================================
 
 train_eval.episodes_per_trial=1
-train_eval.num_train_tasks=30
-train_eval.num_eval_tasks=10
+train_eval.num_train_tasks=10 #30
+train_eval.num_eval_tasks=5 #10
 
 train_eval.eval_interval=100
 train_eval.num_eval_trials=10

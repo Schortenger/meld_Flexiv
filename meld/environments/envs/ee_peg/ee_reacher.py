@@ -6,6 +6,8 @@ import gym
 from gym.envs.mujoco import mujoco_env
 import os
 import gin
+import pdb
+
 
 SCRIPT_DIR = os.path.dirname(__file__)
 
@@ -142,7 +144,9 @@ class EEReachingEnv(mujoco_env.MujocoEnv):
 
     def do_step(self, action):
         if self.startup:
-            feasible_desired_position = 0*action 
+            #feasible startup position should be in the middle of multi boxes
+            # feasible_desired_position = 0*action
+            feasible_desired_position = self.start_qpos
         else: 
             # clip to action limits
             action = np.clip(action, self.action_lows, self.action_highs)
