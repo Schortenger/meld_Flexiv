@@ -4,12 +4,13 @@
     <actuator>
         <position name="pctrl_slix" joint="slide_x" forcerange="-10 10"  ctrlrange="0.41 0.63" kp="50"/>
         <position name="pctrl_sliy" joint="slide_y" forcerange="-10 10" ctrlrange="-0.1 0.1" kp="50"/>
-<!--        <position name="pctrl_sliz" joint="slide_z" forcerange="-10 10" ctrlrange="-0.1 0.1" kp="50"/>-->
+<!--        <position name="pctrl_sliz" joint="slide_z" forcerange="-10 10" ctrlrange="0 0.4" kp="50"/>-->
+<!--        <position name="pctrl_rotz" joint="rot_z" forcerange="-10 10"  ctrlrange="-3.14 3.14" kp="50"/>-->
     </actuator>
 
     <!-- torque control -->
     <actuator>
-        <motor name="fctrl_sliz" joint="slide_z" ctrlrange="-1.5 0"/>
+        <motor name="fctrl_sliz" joint="slide_z" ctrlrange="-100 0"/>
     </actuator>
 
     <!-- position control -->

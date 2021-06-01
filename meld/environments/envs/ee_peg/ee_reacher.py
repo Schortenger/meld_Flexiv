@@ -78,11 +78,11 @@ class EEReachingEnv(mujoco_env.MujocoEnv):
 
         slix_vel_lim = 0.01
         sliy_vel_lim = 0.01
-        F_sliz_vel_lim = 0.1
+        sliz_vel_lim = 0.1
         rotz_vel_lim = 0.04
 
-        self.limits_lows_dof_vel = -np.array([slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim, rotz_vel_lim])
-        self.limits_highs_dof_vel = np.array([slix_vel_lim, sliy_vel_lim, F_sliz_vel_lim, rotz_vel_lim])
+        self.limits_lows_dof_vel = -np.array([slix_vel_lim, sliy_vel_lim, sliz_vel_lim, rotz_vel_lim])
+        self.limits_highs_dof_vel = np.array([slix_vel_lim, sliy_vel_lim, sliz_vel_lim, rotz_vel_lim])
 
 
         # ranges
@@ -170,6 +170,7 @@ class EEReachingEnv(mujoco_env.MujocoEnv):
                 feasible_desired_position = curr_position + desired_delta_position
         # make sure position is always in its range
         feasible_desired_position = feasible_desired_position.clip(self.model.actuator_ctrlrange.copy()[:, 0], self.model.actuator_ctrlrange.copy()[:, 1])
+        feasible_desired_position [2] = -10
         self.do_simulation(feasible_desired_position, self.frame_skip)
 
     def step(self, action):
